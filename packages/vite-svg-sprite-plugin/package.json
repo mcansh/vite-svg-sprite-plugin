@@ -23,18 +23,15 @@
   },
   "scripts": {
     "prepublishOnly": "npm run build",
-    "dev": "tsc --watch",
-    "build": "tsc"
+    "dev": "vite",
+    "build": "vite build"
   },
   "author": "Logan McAnsh <logan@mcan.sh> (https://mcan.sh)",
   "license": "MIT",
   "dependencies": {
-    "fs-extra": "^11.2.0",
-    "hasha": "^6.0.0",
     "svgstore": "^3.0.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
     "vite": "^5.2.7"
   },
   "peerDependencies": {

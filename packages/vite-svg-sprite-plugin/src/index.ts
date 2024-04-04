@@ -1,9 +1,9 @@
+import crypto from "node:crypto";
+import fsp from "node:fs/promises";
 import path from "node:path";
 
-import fse from "fs-extra";
 import svgstore from "svgstore";
 import { ResolvedConfig, Plugin } from "vite";
-import { hash } from "hasha";
 
 let svgRegex = /\.svg$/;
 
@@ -33,7 +33,7 @@ export function createSvgSpritePlugin(configOptions?: Config): Plugin {
     async transform(_code, id) {
       if (svgRegex.test(id)) {
         let basename = path.basename(id, ".svg");
-        let content = await fse.readFile(id, "utf-8");
+        let content = await fsp.readFile(id, "utf-8");
 
         let symbolId = options.symbolId;
         if (options.symbolId.includes("[name]")) {
@@ -56,10 +56,14 @@ export function createSvgSpritePlugin(configOptions?: Config): Plugin {
     },
 
     async writeBundle() {
-      let { assetsDir, outDir } = config.build;
       let sprite = store.toString();
-      let spritePath = path.join(outDir, assetsDir, options.spriteOutputName);
-      await fse.outputFile(spritePath, sprite);
+      let fullOutDir = path.join(config.build.outDir, config.build.assetsDir);
+      let spritePath = path.join(fullOutDir, options.spriteOutputName);
+      // check if directory exists
+      if (!(await fsp.stat(fullOutDir).catch(() => false))) {
+        await fsp.mkdir(fullOutDir, { recursive: true });
+      }
+      await fsp.writeFile(spritePath, sprite);
     },
 
     configureServer(server) {
@@ -74,4 +78,11 @@ export function createSvgSpritePlugin(configOptions?: Config): Plugin {
       });
     },
   };
+}
+
+function hash(content: string): string {
+  return crypto
+    .createHash("shake256", { outputLength: 4 })
+    .update(content)
+    .digest("hex");
 }

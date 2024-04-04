@@ -19,7 +19,8 @@
     "jsonfile": "^6.1.0",
     "prompt-confirm": "^2.0.4",
     "semver": "^7.6.0",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vite-plugin-dts": "^3.8.1"
   },
   "packageManager": "pnpm@9.0.0-beta.2+sha256.013b34133be0fd7f97d8739bd1a64a2b2c4b15af936ef77a14f5db26efb6bef4"
 }
