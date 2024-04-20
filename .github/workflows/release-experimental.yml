@@ -40,7 +40,7 @@ jobs:
   release:
     name: 🧑‍🔬 Experimental Release
     if: |
-      github.repository == 'mcansh/vite-svg-sprite-plugin' &&
+      github.repository == 'mcansh/vite-plugin-svg-sprite' &&
       contains(github.ref, 'experimental')
     runs-on: ubuntu-latest
     steps:

@@ -12,7 +12,7 @@
     "types": [
       "@remix-run/node",
       "vite/client",
-      "@mcansh/vite-svg-sprite-plugin/client"
+      "@mcansh/vite-plugin-svg-sprite/client"
     ],
     "isolatedModules": true,
     "esModuleInterop": true,

@@ -1,13 +1,17 @@
 import path from "node:path";
 import { execSync } from "node:child_process";
+import { glob } from "glob";
 import semver from "semver";
 import jsonfile from "jsonfile";
 import chalk from "chalk";
 import Confirm from "prompt-confirm";
 
-let packages = ["vite-svg-sprite-plugin"];
-
 let rootDir = path.join(import.meta.dirname, "..");
+let packageDir = path.join(rootDir, "packages");
+
+let packages = glob
+  .sync("./*/package.json", { cwd: packageDir })
+  .map((file) => path.dirname(file));
 
 run(process.argv.slice(2)).then(
   () => {
@@ -29,7 +33,7 @@ async function run(args) {
   ensureCleanWorkingDirectory();
 
   // Get the next version number
-  let currentVersion = await getPackageVersion("vite-svg-sprite-plugin");
+  let currentVersion = await getPackageVersion("vite-plugin-svg-sprite");
   let nextVersion = semver.valid(givenVersion);
   if (nextVersion == null) {
     nextVersion = getNextVersion(currentVersion, givenVersion, prereleaseId);
@@ -88,24 +92,8 @@ async function updatePackageConfig(packageName, transform) {
 async function updateVersion(packageName, nextVersion, successMessage) {
   await updatePackageConfig(packageName, (config) => {
     config.version = nextVersion;
-    for (let pkg of packages) {
-      let fullPackageName = `@mcansh/${pkg}`;
-      if (config.dependencies?.[fullPackageName]) {
-        config.dependencies[fullPackageName] = nextVersion;
-      }
-      if (config.devDependencies?.[fullPackageName]) {
-        config.devDependencies[fullPackageName] = nextVersion;
-      }
-      if (config.peerDependencies?.[fullPackageName]) {
-        let isRelaxedPeerDep =
-          config.peerDependencies[fullPackageName]?.startsWith("^");
-        config.peerDependencies[fullPackageName] = `${
-          isRelaxedPeerDep ? "^" : ""
-        }${nextVersion}`;
-      }
-    }
   });
-  let logName = `@mcansh/${packageName.slice(6)}`;
+  let logName = `@mcansh/${packageName}`;
   console.log(
     chalk.green(
       `  ${

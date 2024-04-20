@@ -8,7 +8,7 @@ export const App = () => {
   return (
     <div>
       <div>
-        <svg width="100" height="100" aria-hidden fill="none" stroke="black">
+        <svg width="100" height="100" aria-hidden>
           <use href={archiveBoxArrowDownIconHref} />
         </svg>
 

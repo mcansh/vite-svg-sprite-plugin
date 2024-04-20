@@ -1,9 +1,9 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
-import archiveBoxArrowDownIconHref from "~/assets/archive-box-arrow-down.svg";
+import spriteUrl from "virtual:@mcansh/vite-plugin-svg-sprite";
 import beakerIconHref from "heroicons/24/outline/beaker.svg";
 import eyeIconHref from "lucide-static/icons/eye.svg";
 import homeIconHref from "lucide-static/icons/home.svg";
-import spriteUrl from "virtual:@mcansh/vite-svg-sprite-plugin";
+import archiveBoxArrowDownIconHref from "~/assets/archive-box-arrow-down.svg";
 import { Icon } from "./icon";
 
 export const meta: MetaFunction = () => {
@@ -15,12 +15,7 @@ export const meta: MetaFunction = () => {
 
 export const links: LinksFunction = () => {
   return [
-    {
-      rel: "preload",
-      as: "image",
-      href: spriteUrl,
-      type: "image/svg+xml",
-    },
+    { rel: "preload", as: "image", href: spriteUrl, type: "image/svg+xml" },
   ];
 };
 

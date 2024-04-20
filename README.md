@@ -1,1 +1,1 @@
-./packages/vite-svg-sprite-plugin/README.md
+./packages/vite-plugin-svg-sprite/README.md
